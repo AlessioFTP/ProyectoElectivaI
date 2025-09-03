@@ -1,6 +1,6 @@
-# Guias UAN
+# Guías UAN
 
-
+El proyecto Guías UAN, es una app de guías enfocada al ámbito de videojuegos, dichas guías son hechas por los mismos usuarios.
 
 Autor(es): Jose Nicolás Rojas Bohórquez
 
