@@ -12,11 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoElectivaI" >
         <activity
-            android:name=".ActividadPantallaInicio"
-            android:exported="false"
-            android:label="@string/title_activity_actividad_pantalla_inicio"
-            android:theme="@style/Theme.ProyectoElectivaI" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
