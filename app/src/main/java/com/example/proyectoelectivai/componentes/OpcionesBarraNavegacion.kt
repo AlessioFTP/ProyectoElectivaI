@@ -12,7 +12,6 @@ enum class OpcionesBarraNavegacion(
     INICIO(PantallasApp.PantallaInicio.ruta, "Inicio", R.drawable.icono_inicio, "Inicio"),
     MIS_GUIAS(PantallasApp.PantallaMisGuias.ruta, "Mis Guias", R.drawable.icono_guias, "Mis Guias"),
     NOTIFICACIONES(PantallasApp.PantallaNotificaciones.ruta, "Notificaciones", R.drawable.icono_notificaciones, "Notificaciones"),
-    PERFIL(PantallasApp.PantallaPerfil.ruta, "Perfil", R.drawable.icono_perfil, "Perfil")
-
+    PERFIL(PantallasApp.PantallaPerfil.ruta, "Perfil", R.drawable.icono_perfil, "Perfil"),
 
 }

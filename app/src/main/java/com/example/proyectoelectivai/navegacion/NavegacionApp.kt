@@ -9,6 +9,7 @@ import com.example.proyectoelectivai.pantallas.PantallaInicio
 import com.example.proyectoelectivai.pantallas.PantallaMisGuias
 import com.example.proyectoelectivai.pantallas.PantallaNotificaciones
 import com.example.proyectoelectivai.pantallas.PantallaPerfil
+import com.example.proyectoelectivai.pantallas.PantallaNuevaGuia
 
 
 @Composable
@@ -29,6 +30,9 @@ fun NavegacionApp(navController: NavHostController, modifier: Modifier = Modifie
         }
         composable(route = PantallasApp.PantallaPerfil.ruta) {
             PantallaPerfil(navController, modifier)
+        }
+        composable(route = PantallasApp.pantallaNuevaGuia.ruta){
+            PantallaNuevaGuia(navController, modifier)
         }
     }
 }
