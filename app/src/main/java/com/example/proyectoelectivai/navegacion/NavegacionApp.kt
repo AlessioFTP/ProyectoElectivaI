@@ -1,5 +1,6 @@
 package com.example.proyectoelectivai.navegacion
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -18,6 +19,7 @@ fun NavegacionApp(navController: NavHostController, modifier: Modifier = Modifie
         navController = navController,
         startDestination = PantallasApp.PantallaInicio.ruta,
         modifier = modifier
+            .fillMaxSize()
     ) {
         composable(route = PantallasApp.PantallaInicio.ruta) {
             PantallaInicio(navController, modifier)
