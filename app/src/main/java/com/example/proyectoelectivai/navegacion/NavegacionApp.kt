@@ -11,6 +11,8 @@ import com.example.proyectoelectivai.pantallas.PantallaMisGuias
 import com.example.proyectoelectivai.pantallas.PantallaNotificaciones
 import com.example.proyectoelectivai.pantallas.PantallaPerfil
 import com.example.proyectoelectivai.pantallas.PantallaNuevaGuia
+import com.example.proyectoelectivai.pantallas.PantallaInicioSesion
+import com.example.proyectoelectivai.pantallas.PantallaCrearCuenta
 
 
 @Composable
@@ -35,6 +37,12 @@ fun NavegacionApp(navController: NavHostController, modifier: Modifier = Modifie
         }
         composable(route = PantallasApp.pantallaNuevaGuia.ruta){
             PantallaNuevaGuia(navController, modifier)
+        }
+        composable(route = PantallasApp.PantallaInicioSesion.ruta){
+            PantallaInicioSesion(navController, modifier)
+        }
+        composable(route = PantallasApp.PantallaCrearCuenta.ruta) {
+            PantallaCrearCuenta(navController, modifier)
         }
     }
 }

@@ -6,5 +6,6 @@ sealed class PantallasApp(val ruta: String) {
     object PantallaNotificaciones : PantallasApp("pantalla_notificaciones")
     object PantallaPerfil : PantallasApp("pantalla_perfil")
     object pantallaNuevaGuia : PantallasApp("pantalla_nueva_guia")
-
+    object PantallaInicioSesion : PantallasApp("pantalla_inicio_sesion")
+    object PantallaCrearCuenta : PantallasApp("pantalla_crear_cuenta")
 }

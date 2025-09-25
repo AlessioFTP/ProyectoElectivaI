@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.proyectoelectivai.R
+import com.example.proyectoelectivai.navegacion.PantallasApp
 
 
 @Composable
@@ -65,7 +66,7 @@ fun PantallaPerfil(navController: NavController, modifier: Modifier = Modifier) 
             )
 
             Button(
-                onClick = {/**/ },
+                onClick = {navController.navigate(PantallasApp.PantallaInicioSesion.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
@@ -81,7 +82,7 @@ fun PantallaPerfil(navController: NavController, modifier: Modifier = Modifier) 
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = {/**/ },
+                onClick = {navController.navigate(PantallasApp.PantallaCrearCuenta.ruta)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 30.dp),
