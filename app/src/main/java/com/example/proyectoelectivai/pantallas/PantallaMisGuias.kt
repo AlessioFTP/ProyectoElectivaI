@@ -1,21 +1,15 @@
 package com.example.proyectoelectivai.pantallas
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import android.net.Uri
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.proyectoelectivai.R
 import com.example.proyectoelectivai.componentes.TarjetaMiGuia
-
 
 @Composable
 fun PantallaMisGuias(navController: NavController, modifier: Modifier = Modifier) {
@@ -31,36 +25,29 @@ fun PantallaMisGuias(navController: NavController, modifier: Modifier = Modifier
                 .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            TarjetaMiGuia(titulo = "Guia de balatro", juego = "balatro")
-            TarjetaMiGuia(titulo = "Guia para principiantes 7 days", juego = "7 days to die")
+            // Guía Balatro
+            TarjetaMiGuia(
+                titulo = "Todo sobre Balatro!",
+                imagenRes = R.drawable.balatro,
+                onClick = {
+                    val desc = Uri.encode(
+                        "El juego es 7 Days to Die, un videojuego de mundo abierto que combina disparos en primera persona, supervivencia de terror, defensa de torres y rol en un mundo postapocalíptico infestado de no-muertos. Los jugadores exploran, construyen, fabrican objetos, recolectan recursos y combaten hordas de zombis, culminando en eventos como la Horda de la Luna de Sangre. El juego salió de acceso anticipado en julio de 2024, y se puede jugar en PC y consolas"
+                    )
+                    navController.navigate("detalle/Todo sobre Balatro!/$desc/${R.drawable.balatro}")
+                }
+            )
+
+            // Guía 7 Days
+            TarjetaMiGuia(
+                titulo = "Guía 7 Days",
+                imagenRes = R.drawable.seven_days,
+                onClick = {
+                    val desc = Uri.encode(
+                        "El juego es 7 Days to Die, un videojuego de mundo abierto que combina disparos en primera persona, supervivencia de terror, defensa de torres y rol en un mundo postapocalíptico infestado de no-muertos. Los jugadores exploran, construyen, fabrican objetos, recolectan recursos y combaten hordas de zombis, culminando en eventos como la Horda de la Luna de Sangre. El juego salió de acceso anticipado en julio de 2024, y se puede jugar en PC y consolas."
+                    )
+                    navController.navigate("detalle/Guía 7 Days/$desc/${R.drawable.seven_days}")
+                }
+            )
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            TarjetaMiGuia(titulo = "Como subir de rango en futchampions", juego = "fc26")
-            TarjetaMiGuia(titulo = "Guia para speedrun", juego = "minecraft")
-        }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            TarjetaMiGuia(titulo = "Como farmear la petrolera facil", juego = "rust")
-            TarjetaMiGuia(titulo = "Guia de construcción avanzada", juego = "7 days to die")
-        }
-
     }
-
 }
-
-
