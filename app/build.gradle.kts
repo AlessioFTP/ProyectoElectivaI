@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.1.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
