@@ -39,6 +39,10 @@ fun NavegacionApp(navController: NavHostController, modifier: Modifier = Modifie
         composable(PantallasApp.PantallaCrearCuenta.ruta) {
             PantallaCrearCuenta(navController, modifier)
         }
+        composable(PantallasApp.PantallaBusquedaGuia.ruta) {
+            PantallaBusquedaGuia(navController, modifier)
+        }
+
 
         // Pantalla de detalle de guía
         composable("detalle/{titulo}/{descripcion}/{imagenRes}") { backStackEntry ->

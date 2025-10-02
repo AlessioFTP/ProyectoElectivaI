@@ -1,5 +1,6 @@
 package com.example.proyectoelectivai.componentes
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,41 +13,67 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun TarjetaMiGuia(
     titulo: String,
-    imagenRes: Int,   // Imagen específica de la guía
-    onClick: () -> Unit
+    imagenUrl: String? = null,
+    imagenRes: Int? = null,
+    onClick: () -> Unit,
+    juego: String = ""
 ) {
     Box(
         modifier = Modifier
             .width(180.dp)
             .height(240.dp)
             .clip(RoundedCornerShape(15.dp))
-            .clickable { onClick() } // Maneja el click
+            .clickable { onClick() }
     ) {
-        // Imagen de fondo
-        AsyncImage(
-            model = imagenRes,
-            contentDescription = "Imagen de $titulo",
-            modifier = Modifier
-                .fillMaxSize()
-                .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp)),
-            contentScale = ContentScale.Crop
-        )
 
-        // Capa oscura para resaltar el texto
+        when {
+            !imagenUrl.isNullOrBlank() -> {
+                AsyncImage(
+                    model = imagenUrl,
+                    contentDescription = "Imagen fondo $titulo",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            imagenRes != null -> {
+                Image(
+                    painter = painterResource(id = imagenRes),
+                    contentDescription = "Imagen fondo $titulo",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            else -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.DarkGray)
+                        .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp))
+                )
+            }
+        }
+
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0x80000000))
         )
 
-        // Título centrado sobre la imagen
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,11 +81,39 @@ fun TarjetaMiGuia(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            when {
+                !imagenUrl.isNullOrBlank() -> {
+                    AsyncImage(
+                        model = imagenUrl,
+                        contentDescription = "Imagen miniatura $titulo",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                imagenRes != null -> {
+                    Image(
+                        painter = painterResource(id = imagenRes),
+                        contentDescription = "Imagen miniatura $titulo",
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(8.dp))
             Text(
                 text = titulo,
                 color = Color.White,
                 maxLines = 2,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp
             )
         }
     }

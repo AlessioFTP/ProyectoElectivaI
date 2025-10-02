@@ -8,4 +8,5 @@ sealed class PantallasApp(val ruta: String) {
     object pantallaNuevaGuia : PantallasApp("pantalla_nueva_guia")
     object PantallaInicioSesion : PantallasApp("pantalla_inicio_sesion")
     object PantallaCrearCuenta : PantallasApp("pantalla_crear_cuenta")
+    object PantallaBusquedaGuia : PantallasApp("pantalla_busqueda_guia")
 }
