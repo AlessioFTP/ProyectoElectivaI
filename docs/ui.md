@@ -10,10 +10,6 @@ La aplicación tendrá las siguientes pantallas
 
 ![screen2](images/2.InicioBusquedaGuia.png)
 
-3. Pantalla 3: Como se ven las guías desde la perspectiva del lector.
-
-![screen3](images/3.InicioVistaGuia.png)
-
 4. Pantalla 4: Como se ve el apartado de las guías publicadas por el usuario.
    
 ![screen4](images/4.MisGuias.png)
@@ -41,10 +37,6 @@ La aplicación tendrá las siguientes pantallas
 10. Pantalla 10: Primera parte del momento de crear una guía.
    
 ![screen10](images/10.CrearGuiaPrimeraVista.png)
-    
-11. Pantalla 11: Segunda parte del momento de crear una guía.
-   
-![screen11](images/11.CrearGuiaSegundaVista.png)
 
 # Referencias
 
