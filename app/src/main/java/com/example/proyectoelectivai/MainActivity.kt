@@ -1,6 +1,7 @@
 package com.example.proyectoelectivai
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.proyectoelectivai.componentes.BarraNavegacion
 import com.example.proyectoelectivai.ui.theme.ProyectoElectivaITheme
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Box(modifier = Modifier.fillMaxSize()) {
-
                 Image(
                     painter = painterResource(id = R.drawable.fondoapp),
                     contentDescription = null,
@@ -34,4 +35,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

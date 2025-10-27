@@ -42,31 +42,13 @@ fun PantallaInicio(
     ) {
         BarraBusqueda(query = query, onQueryChange = { query = it })
 
-
-        // boton temproal de busqueda de minecraft
-        Button(
-            onClick = {navController.navigate(PantallasApp.PantallaBusquedaGuia.ruta)},
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-        ) {
-            Text(
-                text = "Buscar Guías de Minecraft",
-                fontSize = 20.dp.value.sp,
-                modifier = Modifier.padding(vertical = 10.dp)
-            )
-        }
-
         CategoriaDeJuegos.entries.forEach { categoria ->
-
             BloqueRecomendaciones(juegos = categoria.nombres, titulo = categoria.titulo)
 
         }
 
 
     }
-
 
 }
 

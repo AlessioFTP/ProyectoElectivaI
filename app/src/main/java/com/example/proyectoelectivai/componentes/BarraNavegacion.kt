@@ -59,7 +59,7 @@ fun BotonNuevaTarea(navController: NavController, currentDestination: String?) {
     ) {
         IconButton(
             onClick = {
-                navController.navigate(PantallasApp.pantallaNuevaGuia.ruta) {
+                navController.navigate(PantallasApp.PantallaNuevaGuia.ruta) {
                     popUpTo(navController.graph.startDestinationId) {
                         inclusive = true
                     }
@@ -71,7 +71,7 @@ fun BotonNuevaTarea(navController: NavController, currentDestination: String?) {
                 .clip(CircleShape)
                 .background(Color.Gray)
                 .border(
-                    if (currentDestination == PantallasApp.pantallaNuevaGuia.ruta) BorderStroke(
+                    if (currentDestination == PantallasApp.PantallaNuevaGuia.ruta) BorderStroke(
                         2.dp,
                         Color.White
                     ) else BorderStroke(0.dp, Color.Transparent),
@@ -83,9 +83,9 @@ fun BotonNuevaTarea(navController: NavController, currentDestination: String?) {
                 painter = painterResource(R.drawable.icono_nueva_guia),
                 contentDescription = "Nueva Guia",
                 modifier = Modifier.size(
-                    if (currentDestination == PantallasApp.pantallaNuevaGuia.ruta) 48.dp else 40.dp
+                    if (currentDestination == PantallasApp.PantallaNuevaGuia.ruta) 48.dp else 40.dp
                 ),
-                tint = if (currentDestination == PantallasApp.pantallaNuevaGuia.ruta) Color.White else Color.DarkGray,
+                tint = if (currentDestination == PantallasApp.PantallaNuevaGuia.ruta) Color.White else Color.DarkGray,
             )
         }
     }
