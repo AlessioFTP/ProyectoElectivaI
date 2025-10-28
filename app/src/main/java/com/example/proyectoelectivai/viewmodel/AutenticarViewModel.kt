@@ -18,8 +18,6 @@ class AutenticarViewModel : ViewModel() {
 
     private val _usuario = MutableStateFlow<String?>(null)
 
-    val usuario: StateFlow<String?> = _usuario
-
     fun iniciarSesion(correo: String, clave: String) {
         viewModelScope.launch {
             if (!validarCampos(correo, clave)) {
@@ -106,29 +104,6 @@ class AutenticarViewModel : ViewModel() {
         return autenticar.currentUser != null
     }
 
-    suspend fun obtenerUsuarioActual(): String? {
-        if (!usuarioLogueado()) {
-            return null
-        }
-
-        val correoActual = FirebaseAuth.getInstance().currentUser?.email ?: return null
-        val db = FirebaseFirestore.getInstance()
-
-        val resultado = db.collection("usuarios")
-            .whereEqualTo("correo", correoActual)
-            .get()
-            .await()
-
-        return if (resultado.documents.isNotEmpty()) {
-            resultado.documents[0].getString("usuario")
-        } else {
-            null
-        }
-    }
-
-    fun actualizarUsuario(nombre: String) {
-        _usuario.value = nombre
-    }
 
     fun obtenerUidActual(): String? {
         return autenticar.currentUser?.uid

@@ -14,12 +14,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TextField
+import androidx.compose.ui.focus.onFocusChanged
 
 
 @Composable
 fun BarraBusqueda(
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onFocusChanged: (Boolean) -> Unit
 ) {
     TextField(
         value = query,
@@ -31,7 +33,10 @@ fun BarraBusqueda(
             .fillMaxWidth()
             .padding(horizontal = 30.dp, vertical = 8.dp)
             .clip(RoundedCornerShape(50.dp))
-            .background(Color.Blue.copy(alpha = 0.5f)),
+            .background(Color.Blue.copy(alpha = 0.5f))
+            .onFocusChanged { focusState ->
+                onFocusChanged(focusState.isFocused)
+            },
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.White,
             focusedContainerColor = Color.White,

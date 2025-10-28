@@ -34,13 +34,20 @@ fun PantallaInicio(
     modifier: Modifier = Modifier
 ) {
     var query by remember { mutableStateOf("") }
+    var tieneFocoBusqueda by remember { mutableStateOf(false) }
     Column(
         verticalArrangement = Arrangement.Top,
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        BarraBusqueda(query = query, onQueryChange = { query = it })
+        BarraBusqueda(
+            query = query,
+            onQueryChange = { query = it },
+            onFocusChanged = { enfocado ->
+                tieneFocoBusqueda = enfocado
+            }
+        )
 
         CategoriaDeJuegos.entries.forEach { categoria ->
             BloqueRecomendaciones(juegos = categoria.nombres, titulo = categoria.titulo)
