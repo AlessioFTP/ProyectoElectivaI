@@ -179,7 +179,7 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
                         descripcion = nuevoTexto
                     }
                 },
-                label = { Text("Descripción") },
+                label = { Text("Descripción (Máximo 32 carácteres)") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
