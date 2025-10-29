@@ -37,7 +37,7 @@ fun PantallaPerfilSinLoguear(navController: NavController, modifier: Modifier = 
             .fillMaxSize()
             .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(color = Color.DarkGray),
+            .background(color = Color(0xFF161516)),
     ) {
         Column(
             modifier = Modifier

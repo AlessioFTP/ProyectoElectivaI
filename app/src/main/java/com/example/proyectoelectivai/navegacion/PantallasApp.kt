@@ -10,4 +10,14 @@ sealed class PantallasApp(val ruta: String) {
     object PantallaNuevaGuia : PantallasApp("pantalla_nueva_guia")
     object PantallaInicioSesion : PantallasApp("pantalla_inicio_sesion")
     object PantallaCrearCuenta : PantallasApp("pantalla_crear_cuenta")
+    object PantallaEditarGuia : PantallasApp("pantalla_editar_guia/{idGuia}"){
+        fun crearRuta(idGuia: String): String {
+            return "pantalla_editar_guia/$idGuia"
+        }
+    }
+    object PantallaDetalleGuia : PantallasApp("pantalla_detalle_guia/{idGuia}/{usuarioCreador}"){
+        fun crearRuta(idGuia: String, usuarioCreador: String): String {
+            return "pantalla_detalle_guia/$idGuia/$usuarioCreador"
+        }
+    }
 }

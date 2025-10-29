@@ -23,7 +23,10 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.proyectoelectivai.R
 import com.example.proyectoelectivai.componentes.BarraBusqueda
+import com.example.proyectoelectivai.datos.modelo.Apartado
+import com.example.proyectoelectivai.datos.modelo.Bloque
 import com.example.proyectoelectivai.datos.modelo.Grid
+import com.example.proyectoelectivai.datos.modelo.Guia
 import com.example.proyectoelectivai.navegacion.PantallasApp
 import com.example.proyectoelectivai.viewmodel.AutenticarViewModel
 import com.example.proyectoelectivai.viewmodel.JuegosViewModel
@@ -34,7 +37,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifier) {
     var viewModelUsuario: AutenticarViewModel = viewModel()
     if (!viewModelUsuario.usuarioLogueado()) {
-        navController.navigate(PantallasApp.PantallaInicio.ruta)
+        navController.navigate(PantallasApp.PantallaInicio.ruta) {
+            popUpTo(PantallasApp.PantallaNuevaGuia.ruta) { inclusive = true }
+        }
+        return
     }
     val uid = viewModelUsuario.obtenerUidActual()!!
     var datosUsuario by remember { mutableStateOf<Map<String, Any>?>(null) }
@@ -62,7 +68,7 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
             .fillMaxSize()
             .padding(top = 20.dp, start = 10.dp, end = 10.dp)
             .clip(RoundedCornerShape(20.dp))
-            .background(color = Color.DarkGray),
+            .background(color = Color(0xFF161516)),
     ) {
         Column(
             modifier = Modifier
@@ -190,7 +196,9 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
                     unfocusedContainerColor = Color.Transparent,
                     cursorColor = Color.White,
                     focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.LightGray
+                    unfocusedLabelColor = Color.LightGray,
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White
                 )
             )
 
@@ -286,17 +294,55 @@ fun guardarGuia(
 ) {
     val db = FirebaseFirestore.getInstance()
     val guiasRef = db.collection("guias")
-        .document(usuarioCreador)
-        .collection("guias")
 
     val nuevaGuia = guiasRef.document()
     val idGenerado = nuevaGuia.id
 
-    val guia = hashMapOf(
-        "idGuia" to idGenerado,
-        "tituloJuego" to tituloJuego,
-        "descripcion" to descripcion,
-        "imagenPortada" to gridUrl
+
+    val guia = Guia(
+        idGuia = idGenerado,
+        tituloJuego = tituloJuego,
+        descripcion = descripcion,
+        imagenPortada = gridUrl,
+        usuarioCreador = usuarioCreador/*,
+        apartados = listOf(
+            Apartado(
+                titulo = "Redstone",
+                contenido = listOf(
+                    Bloque("texto", "Automatiazciones", "Cómo automatizar puertas y trampas con redstone"),
+                    Bloque(
+                        "imagen",
+                        "",
+                        "https://codakid.com/wp-content/uploads/2022/01/Redstone-Ore-1.png"
+                    ),
+                    Bloque("texto", "CosasExtra", "Detalles adicionales")
+                )
+            ),
+            Apartado(
+                titulo = "PVP",
+                contenido = listOf(
+                    Bloque("texto", "Clicks", "Cómo hacer mas de 10cps en PVP"),
+                    Bloque(
+                        "imagen",
+                        "",
+                        "https://xforgeassets002.xboxlive.com/pf-namespace-b63a0803d3653643/21a41e80-673c-4801-a436-46e72daf22f6/PvPPros_Thumbnail_0.jpg"
+                    ),
+                    Bloque("texto", "CosasExtra", "Detalles adicionales")
+                )
+            ),
+            Apartado(
+                titulo = "Harcore",
+                contenido = listOf(
+                    Bloque("texto", "Tutoriales", "Cómo no morir al inicio en hardore"),
+                    Bloque(
+                        "imagen",
+                        "",
+                        "https://i.pinimg.com/736x/9d/0b/a4/9d0ba4abefa9d71074173c1b8446dc28.jpg"
+                    ),
+                    Bloque("texto", "CosasExtra", "Detalles adicionales")
+                )
+            )
+        )*/
     )
 
     nuevaGuia.set(guia)

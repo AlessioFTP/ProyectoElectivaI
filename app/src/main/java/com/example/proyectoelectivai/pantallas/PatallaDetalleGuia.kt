@@ -1,60 +1,77 @@
-package com.example.proyectoelectivai.ui.screens
+package com.example.proyectoelectivai.pantallas
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.proyectoelectivai.componentes.ApartadosDetalleGuia
+import com.example.proyectoelectivai.componentes.ImagenSuperiorDetalleGuia
+import com.example.proyectoelectivai.datos.modelo.Guia
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PantallaDetalleGuia(
-    titulo: String,
-    descripcion: String,
-    imagenRes: Int
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    idGuia: String,
+    usuarioCreador: String
 ) {
-    Column(
+    var guia by remember { mutableStateOf<Guia?>(null) }
+
+    LaunchedEffect(idGuia) {
+        guia = buscarGuiaPorId(idGuia)
+    }
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .clip(
+                RoundedCornerShape(
+                    15.dp
+                )
+            )
+            .background(color = Color(0xFF161516))
     ) {
-        // Imagen del juego
-        Image(
-            painter = painterResource(id = imagenRes),
-            contentDescription = "Imagen del juego",
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-        )
+        guia?.let { datosGuia ->
+            Column(
+                modifier = Modifier.fillMaxSize(),
+            ) {
 
-        Spacer(modifier = Modifier.height(16.dp))
+                ImagenSuperiorDetalleGuia(datosGuia, usuarioCreador, navController)
 
-        // Título
-        Text(
-            text = titulo,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+                ApartadosDetalleGuia(datosGuia)
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Descripción
-        Text(
-            text = descripcion,
-            fontSize = 16.sp,
-            color = Color.White
+            }
+        } ?: Text(
+            text = "Cargando guía...",
+            color = Color.Gray,
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
+
+
+suspend fun buscarGuiaPorId(idGuia: String): Guia? {
+    val db = FirebaseFirestore.getInstance()
+    val snapshot = db.collection("guias").document(idGuia).get().await()
+    return snapshot.toObject(Guia::class.java)
+}
+
+
+
+
+

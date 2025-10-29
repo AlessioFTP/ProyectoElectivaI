@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.proyectoelectivai.pantallas.*
 
 @Composable
@@ -43,5 +45,23 @@ fun NavegacionApp(navController: NavHostController, modifier: Modifier = Modifie
         composable(PantallasApp.PantallaPerfilLogueado.ruta) {
             PantallaPerfilLogueado(navController, modifier)
         }
+        composable(
+            route = PantallasApp.PantallaEditarGuia.ruta,
+            arguments = listOf(navArgument("idGuia") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val idGuia = backStackEntry.arguments?.getString("idGuia") ?: ""
+            PantallaEditarGuia(navController, modifier, idGuia)
+        }
+        composable(
+            route = PantallasApp.PantallaDetalleGuia.ruta,
+            arguments = listOf(
+                navArgument("idGuia") { type = NavType.StringType },
+                navArgument("usuarioCreador") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val idGuia = backStackEntry.arguments?.getString("idGuia") ?: ""
+            val usuarioCreador = backStackEntry.arguments?.getString("usuarioCreador") ?: ""
+            PantallaDetalleGuia(navController, modifier, idGuia, usuarioCreador)
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.proyectoelectivai.pantallas
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 import androidx.compose.foundation.lazy.items
 
 
-
 @Composable
 fun PantallaMisGuias(navController: NavController, modifier: Modifier = Modifier) {
-    var viewModelUsuario: AutenticarViewModel = viewModel()
+    val viewModelUsuario: AutenticarViewModel = viewModel()
 
     if (!viewModelUsuario.usuarioLogueado()) {
-        navController.navigate(PantallasApp.PantallaInicio.ruta)
+        navController.navigate(PantallasApp.PantallaInicio.ruta){
+            popUpTo(PantallasApp.PantallaMisGuias.ruta) { inclusive = true }
+        }
+        return
     }
 
     val uid = viewModelUsuario.obtenerUidActual()!!
@@ -67,7 +70,14 @@ fun PantallaMisGuias(navController: NavController, modifier: Modifier = Modifier
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 grupo.forEach { guia ->
-                    TarjetaMiGuia(guia["descripcion"] as String,guia["imagenPortada"] as String)
+                    TarjetaMiGuia(
+                        guia["descripcion"] as String,
+                        guia["imagenPortada"] as String,
+                        modifier = Modifier.clickable {
+                            navController.navigate(
+                                PantallasApp.PantallaDetalleGuia.crearRuta(guia["idGuia"] as String, guia["usuarioCreador"] as String)
+                            )
+                        })
                 }
 
                 if (grupo.size == 1) {
@@ -83,8 +93,7 @@ fun PantallaMisGuias(navController: NavController, modifier: Modifier = Modifier
 fun obtenerGuiasDelUsuario(usuarioCreador: String, onResutlado: (List<Map<String, Any>>) -> Unit) {
     val db = FirebaseFirestore.getInstance()
     db.collection("guias")
-        .document(usuarioCreador)
-        .collection("guias")
+        .whereEqualTo("usuarioCreador", usuarioCreador)
         .get()
         .addOnSuccessListener { snapshots ->
             val listaGuias = snapshots.documents.mapNotNull { it.data }

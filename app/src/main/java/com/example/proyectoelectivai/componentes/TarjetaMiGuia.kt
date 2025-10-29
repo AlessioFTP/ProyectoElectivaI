@@ -27,11 +27,12 @@ import com.example.proyectoelectivai.viewmodel.SteamGridViewModel
 @Composable
 fun TarjetaMiGuia(
     titulo: String,
-    grid: String
+    grid: String,
+    modifier: Modifier
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(180.dp)
             .height(240.dp)
             .clip(RoundedCornerShape(15.dp))
