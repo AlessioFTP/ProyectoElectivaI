@@ -1,7 +1,6 @@
 package com.example.proyectoelectivai.pantallas
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -20,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.proyectoelectivai.R
+import com.example.proyectoelectivai.datos.modelo.Usuario
 import com.example.proyectoelectivai.viewmodel.AutenticarViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -40,10 +39,11 @@ fun PantallaPerfilLogueado(navController: NavController, modifier: Modifier = Mo
     val viewModel: AutenticarViewModel = viewModel()
     val uid = viewModel.obtenerUidActual()!!
 
-    var datosUsuario by remember { mutableStateOf<Map<String, Any>?>(null) }
+    var datosUsuario by remember { mutableStateOf<Usuario?>(null) }
     LaunchedEffect(uid) {
         datosUsuario = obtenerDatosUsuario(uid)
     }
+
 
     var imagenUri by remember { mutableStateOf<Uri?>(null) }
     val launcher = rememberLauncherForActivityResult(
@@ -78,8 +78,8 @@ fun PantallaPerfilLogueado(navController: NavController, modifier: Modifier = Mo
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop
                     )
-                    datosUsuario?.get("urlImagenPerfil") != null -> AsyncImage(
-                        model = datosUsuario!!["urlImagenPerfil"],
+                    datosUsuario?.urlImagenPerfil != null -> AsyncImage(
+                        model = datosUsuario!!.urlImagenPerfil,
                         contentDescription = "Imagen guardada en Firebase",
                         modifier = Modifier
                             .size(200.dp)
@@ -118,7 +118,7 @@ fun PantallaPerfilLogueado(navController: NavController, modifier: Modifier = Mo
             }
 
             Text(
-                text = datosUsuario?.get("usuario") as? String ?: "Usuario",
+                text = datosUsuario?.usuario ?: "Usuario",
                 fontSize = 30.dp.value.sp,
                 color = Color.White,
                 modifier = Modifier
@@ -149,12 +149,12 @@ fun PantallaPerfilLogueado(navController: NavController, modifier: Modifier = Mo
     }
 }
 
-suspend fun obtenerDatosUsuario(uid: String): Map<String, Any>? {
+suspend fun obtenerDatosUsuario(uid: String): Usuario? {
     val db = FirebaseFirestore.getInstance()
     val docRef = db.collection("usuarios").document(uid)
 
     val snapshot = docRef.get().await()
-    return if (snapshot.exists()) snapshot.data else null
+    return if (snapshot.exists()) snapshot.toObject(Usuario::class.java) else null
 }
 
 fun subirImagenAFirebase(uri: Uri, uid: String) {

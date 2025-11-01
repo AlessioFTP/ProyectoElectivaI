@@ -27,33 +27,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.proyectoelectivai.componentes.ApartadoEditor
-import com.example.proyectoelectivai.componentes.ApartadosDetalleGuia
-import com.example.proyectoelectivai.componentes.BarraBusqueda
-import com.example.proyectoelectivai.componentes.BloqueRecomendaciones
-import com.example.proyectoelectivai.componentes.CategoriaDeJuegos
-import com.example.proyectoelectivai.componentes.ImagenSuperiorDetalleGuia
 import com.example.proyectoelectivai.datos.modelo.Apartado
 import com.example.proyectoelectivai.datos.modelo.Bloque
 import com.example.proyectoelectivai.datos.modelo.Guia
+import com.example.proyectoelectivai.datos.modelo.Usuario
 import com.example.proyectoelectivai.navegacion.PantallasApp
+import com.example.proyectoelectivai.viewmodel.AutenticarViewModel
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PantallaEditarGuia(
     navController: NavController,
     modifier: Modifier,
-    idGuia: String
+    idGuia: String,
 ) {
     var guia by remember { mutableStateOf<Guia?>(null) }
+    val viewModelUsuario: AutenticarViewModel = viewModel()
 
     LaunchedEffect(idGuia) {
         guia = buscarGuiaPorId(idGuia)
+    }
+
+    val uid = viewModelUsuario.obtenerUidActual()!!
+    var datosUsuario by remember { mutableStateOf<Usuario?>(null) }
+    LaunchedEffect(uid) {
+        datosUsuario = obtenerDatosUsuario(uid)
     }
 
     guia?.let { datosGuia ->
@@ -116,7 +120,7 @@ fun PantallaEditarGuia(
                 Button(
                     onClick = {
                         val guiaActualizada = datosGuia.copy(apartados = apartados)
-                        actualizarGuiaEnFirestore(guiaActualizada)
+                        actualizarGuiaEnFirestore(guiaActualizada, datosUsuario!!.urlImagenPerfil, guia!!.imagenPortada)
                         navController.popBackStack()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFA42500)),
@@ -145,10 +149,28 @@ fun PantallaEditarGuia(
     }
 }
 
-fun actualizarGuiaEnFirestore(guia: Guia) {
+fun actualizarGuiaEnFirestore(guia: Guia, imagenUsuarioCreador: String = "", imagenGuia: String ) {
     val db = FirebaseFirestore.getInstance()
-    db.collection("guias").document(guia.idGuia).set(guia)
+
+    db.collection("guias").document(guia.idGuia)
+        .set(guia)
+        .addOnSuccessListener {
+
+            val notificacion = mapOf(
+                "mensaje" to "${guia.usuarioCreador} ha actualizado la guía: ${guia.descripcion}",
+                "imagenUsuarioCreador" to imagenUsuarioCreador,
+                "imagenGuia" to imagenGuia,
+                "leida" to false,
+                "idGuia" to guia.idGuia
+            )
+
+            guia.uidUsuariosFavoritos.forEach { uidUsuario ->
+                db.collection("usuarios").document(uidUsuario)
+                    .update("notificaciones", FieldValue.arrayUnion(notificacion))
+            }
+        }
 }
+
 
 fun borrarGuiaEnFirestore(guia: Guia) {
     val db = FirebaseFirestore.getInstance()

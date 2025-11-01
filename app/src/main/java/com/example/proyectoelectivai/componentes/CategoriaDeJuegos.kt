@@ -16,9 +16,9 @@ enum class CategoriaDeJuegos(val nombres: List<String>, val titulo: String) {
         titulo = "Juegos Accion",
         nombres = listOf(
             "The last of us 2",
-            "rust",
+            "Rust",
             "7 days to die",
-            "ark",
+            "Call of Duty®: Warzone™",
             "left 4 dead 2",
             "payday 2"
         )

@@ -2,6 +2,7 @@ package com.example.proyectoelectivai.componentes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -38,7 +39,8 @@ import androidx.compose.ui.unit.sp
 fun BloqueRecomendaciones(
     viewModel: SteamGridViewModel = viewModel(),
     titulo: String,
-    juegos: List<String>
+    juegos: List<String>,
+    onJuegoSeleccionado: (String) -> Unit
 ) {
 
     var gridPorJuego by remember { mutableStateOf<Map<String, List<Grid>>>(emptyMap()) }
@@ -81,7 +83,10 @@ fun BloqueRecomendaciones(
                                 .width(180.dp)
                                 .fillMaxHeight()
                                 .border(2.dp, color = Color.Gray, RoundedCornerShape(15.dp))
-                                .clip(RoundedCornerShape(15.dp)),
+                                .clip(RoundedCornerShape(15.dp))
+                                .clickable{
+                                    onJuegoSeleccionado(juego)
+                                },
                             elevation = CardDefaults.cardElevation(0.dp),
                             colors = CardDefaults.cardColors(
                                 containerColor =

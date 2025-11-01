@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,10 +24,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.proyectoelectivai.R
 import com.example.proyectoelectivai.componentes.BarraBusqueda
-import com.example.proyectoelectivai.datos.modelo.Apartado
-import com.example.proyectoelectivai.datos.modelo.Bloque
 import com.example.proyectoelectivai.datos.modelo.Grid
 import com.example.proyectoelectivai.datos.modelo.Guia
+import com.example.proyectoelectivai.datos.modelo.Usuario
 import com.example.proyectoelectivai.navegacion.PantallasApp
 import com.example.proyectoelectivai.viewmodel.AutenticarViewModel
 import com.example.proyectoelectivai.viewmodel.JuegosViewModel
@@ -43,12 +43,12 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
         return
     }
     val uid = viewModelUsuario.obtenerUidActual()!!
-    var datosUsuario by remember { mutableStateOf<Map<String, Any>?>(null) }
+    var datosUsuario by remember { mutableStateOf<Usuario?>(null) }
     LaunchedEffect(uid) {
         datosUsuario = obtenerDatosUsuario(uid)
     }
 
-    val usuarioCreador = datosUsuario?.get("usuario") as? String
+    val usuarioCreador = datosUsuario?.usuario
 
     val viewModelJuegos: JuegosViewModel = viewModel()
     val resultados by viewModelJuegos.juegosFiltrados.collectAsState()
@@ -205,11 +205,17 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
             Box(modifier = Modifier.fillMaxWidth()) {
                 IconButton(
                     onClick = {
+                        if (tituloJuego.isBlank() || descripcion.isBlank() || gridSeleccionado.isBlank() || usuarioCreador.isNullOrBlank() || viewModelJuegos.juegoExiste(
+                                tituloJuego
+                            )
+                        ) {
+                            return@IconButton
+                        }
                         guardarGuia(
                             tituloJuego,
                             descripcion,
                             gridSeleccionado,
-                            usuarioCreador!!
+                            usuarioCreador
                         )
                         navController.navigate(PantallasApp.PantallaMisGuias.ruta) {
                             popUpTo(PantallasApp.PantallaNuevaGuia.ruta) { inclusive = true }
@@ -304,45 +310,8 @@ fun guardarGuia(
         tituloJuego = tituloJuego,
         descripcion = descripcion,
         imagenPortada = gridUrl,
-        usuarioCreador = usuarioCreador/*,
-        apartados = listOf(
-            Apartado(
-                titulo = "Redstone",
-                contenido = listOf(
-                    Bloque("texto", "Automatiazciones", "Cómo automatizar puertas y trampas con redstone"),
-                    Bloque(
-                        "imagen",
-                        "",
-                        "https://codakid.com/wp-content/uploads/2022/01/Redstone-Ore-1.png"
-                    ),
-                    Bloque("texto", "CosasExtra", "Detalles adicionales")
-                )
-            ),
-            Apartado(
-                titulo = "PVP",
-                contenido = listOf(
-                    Bloque("texto", "Clicks", "Cómo hacer mas de 10cps en PVP"),
-                    Bloque(
-                        "imagen",
-                        "",
-                        "https://xforgeassets002.xboxlive.com/pf-namespace-b63a0803d3653643/21a41e80-673c-4801-a436-46e72daf22f6/PvPPros_Thumbnail_0.jpg"
-                    ),
-                    Bloque("texto", "CosasExtra", "Detalles adicionales")
-                )
-            ),
-            Apartado(
-                titulo = "Harcore",
-                contenido = listOf(
-                    Bloque("texto", "Tutoriales", "Cómo no morir al inicio en hardore"),
-                    Bloque(
-                        "imagen",
-                        "",
-                        "https://i.pinimg.com/736x/9d/0b/a4/9d0ba4abefa9d71074173c1b8446dc28.jpg"
-                    ),
-                    Bloque("texto", "CosasExtra", "Detalles adicionales")
-                )
-            )
-        )*/
+        usuarioCreador = usuarioCreador,
+        tituloJuegoMinuscula = tituloJuego.lowercase()
     )
 
     nuevaGuia.set(guia)

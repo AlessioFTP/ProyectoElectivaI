@@ -1,6 +1,5 @@
 package com.example.proyectoelectivai.componentes
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,10 +35,11 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.proyectoelectivai.R
 import com.example.proyectoelectivai.datos.modelo.Guia
+import com.example.proyectoelectivai.datos.modelo.Usuario
 import com.example.proyectoelectivai.navegacion.PantallasApp
-import com.example.proyectoelectivai.pantallas.guardarGuia
 import com.example.proyectoelectivai.pantallas.obtenerDatosUsuario
 import com.example.proyectoelectivai.viewmodel.AutenticarViewModel
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun ImagenSuperiorDetalleGuia(
@@ -50,12 +50,13 @@ fun ImagenSuperiorDetalleGuia(
     val viewModelAutenticar: AutenticarViewModel = viewModel()
 
     var usuarioLogueado by remember { mutableStateOf("") }
+    var datosUsuario by remember { mutableStateOf<Usuario?>(null) }
 
     if (viewModelAutenticar.usuarioLogueado()) {
         val uid = viewModelAutenticar.obtenerUidActual()!!
         LaunchedEffect(uid) {
-            val datosUsuario = obtenerDatosUsuario(uid)
-            usuarioLogueado = datosUsuario?.get("usuario") as? String ?: ""
+            datosUsuario = obtenerDatosUsuario(uid)
+            usuarioLogueado = datosUsuario?.usuario ?: ""
         }
     }
 
@@ -88,7 +89,11 @@ fun ImagenSuperiorDetalleGuia(
         if (usuarioCreador == usuarioLogueado) {
             IconButton(
                 onClick = {
-                    navController.navigate(PantallasApp.PantallaEditarGuia.crearRuta(datosGuia.idGuia))
+                    navController.navigate(
+                        PantallasApp.PantallaEditarGuia.crearRuta(
+                            datosGuia.idGuia
+                        )
+                    )
                 },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -97,6 +102,42 @@ fun ImagenSuperiorDetalleGuia(
                 Icon(
                     painter = painterResource(R.drawable.icono_editar_guia),
                     contentDescription = "Nueva Guia",
+                    modifier = Modifier.size(48.dp),
+                    tint = Color.White
+                )
+            }
+        } else if (!usuarioLogueado.isEmpty()) {
+            var guardadaPorUsuario by remember { mutableStateOf(false) }
+
+            if (datosUsuario != null) {
+                guardadaPorUsuario = datosGuia.uidUsuariosFavoritos.contains(datosUsuario!!.uid)
+            }
+
+            var iconoFavorito by remember { mutableIntStateOf(0) }
+
+            if (guardadaPorUsuario) {
+                iconoFavorito = R.drawable.icono_guia_en_favoritos
+            } else {
+                iconoFavorito = R.drawable.icono_poner_guia_favoritos
+            }
+            IconButton(
+                onClick = {
+                    guardadaPorUsuario = !guardadaPorUsuario
+
+                    if (guardadaPorUsuario) {
+                        datosGuia.uidUsuariosFavoritos.add(datosUsuario!!.uid)
+                    } else {
+                        datosGuia.uidUsuariosFavoritos.remove(datosUsuario!!.uid)
+                    }
+                    actualizarCampoFavoritos(datosGuia.idGuia, datosGuia.uidUsuariosFavoritos)
+                },
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .size(70.dp)
+            ) {
+                Icon(
+                    painter = painterResource(iconoFavorito),
+                    contentDescription = "Favoritos",
                     modifier = Modifier.size(48.dp),
                     tint = Color.White
                 )
@@ -130,4 +171,10 @@ fun ImagenSuperiorDetalleGuia(
         }
 
     }
+}
+
+fun actualizarCampoFavoritos(guiaId: String, nuevosFavoritos: List<String>) {
+    val db = FirebaseFirestore.getInstance()
+    db.collection("guias").document(guiaId)
+        .update("uidUsuariosFavoritos", nuevosFavoritos)
 }

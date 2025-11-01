@@ -95,6 +95,7 @@ fun PantallaPerfilSinLoguear(navController: NavController, modifier: Modifier = 
                 )
             }
 
+            /*
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
@@ -106,6 +107,7 @@ fun PantallaPerfilSinLoguear(navController: NavController, modifier: Modifier = 
                 color = Color.White,
                 textAlign = TextAlign.Center,
             )
+            */
         }
     }
 
