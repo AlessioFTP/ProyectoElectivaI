@@ -205,7 +205,7 @@ fun PantallaNuevaGuia(navController: NavController, modifier: Modifier = Modifie
             Box(modifier = Modifier.fillMaxWidth()) {
                 IconButton(
                     onClick = {
-                        if (tituloJuego.isBlank() || descripcion.isBlank() || gridSeleccionado.isBlank() || usuarioCreador.isNullOrBlank() || viewModelJuegos.juegoExiste(
+                        if (tituloJuego.isBlank() || descripcion.isBlank() || gridSeleccionado.isBlank() || usuarioCreador.isNullOrBlank() || !viewModelJuegos.juegoExiste(
                                 tituloJuego
                             )
                         ) {
