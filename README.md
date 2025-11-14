@@ -9,4 +9,4 @@ Autor(es): Jose Nicolás Rojas Bohórquez - Sara Eloisa Carvajal Jimnenez - Dani
 - [Ideas iniciales de proyecto](docs/ideas.md)
 - [Funcionalidades de la aplicación](docs/funcionalidades.md)
 - [Diseño de la interfaz de usuario](docs/ui.md)
-- [Presentación](/presentacion.pdf)
+- [Presentación](docs/presentacion.pdf)
